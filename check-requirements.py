@@ -36,17 +36,18 @@ with open('requirements.txt', 'r', encoding='utf-8') as f:
             # print('install')
             pass
 # print(lacklist)
-pysources=['https://pypi.tuna.tsinghua.edu.cn/simple','https://mirrors.aliyun.com/pypi/simple/']
-pys_url=pysources[0]
+pysources = ['https://pypi.tuna.tsinghua.edu.cn/simple',
+             'https://mirrors.aliyun.com/pypi/simple/']
+pys_url = pysources[0]
 for pys in pysources:
-	# print(pys)
-	try:
-		status=requests.get(pys,timeout=(2,3)).status_code	
-		if status==200:
-			pys_url=pys
-			break
-	except:
-		continue
+    # print(pys)
+    try:
+        status = requests.get(pys, timeout=(2, 3)).status_code
+        if status == 200:
+            pys_url = pys
+            break
+    except:
+        continue
 if len(lacklist) == 0:
     print('all requirements are installed')
 else:
