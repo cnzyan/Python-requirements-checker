@@ -1,5 +1,15 @@
 import subprocess
-import requests
+import urllib3
+ 
+http = urllib3.PoolManager()
+ 
+def is_site_up(url):
+    try:
+        response = http.request('HEAD', url)
+        return response.status == 200
+    except urllib3.exceptions.MaxRetryError:
+        return False
+    
 # 执行命令并获取输出
 result = subprocess.run(
     ['pip', 'list'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
@@ -42,8 +52,7 @@ pys_url = pysources[0]
 for pys in pysources:
     # print(pys)
     try:
-        status = requests.get(pys, timeout=(2, 3)).status_code
-        if status == 200:
+        if is_site_up(pys):
             pys_url = pys
             break
     except:
