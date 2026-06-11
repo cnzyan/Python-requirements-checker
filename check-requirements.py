@@ -39,23 +39,33 @@ exit_code = result.returncode
 
 lacklist = []
 with open('requirements.txt', "rb") as f:
-    encoding = detect_encoding(f.read())[0]
-    print(encoding)
-with open('requirements.txt', 'r',encoding=encoding) as f:
-    requirements = f.readlines()
-    requirements = [x.strip() for x in requirements]
-    # print(requirements)
-    for i in requirements:
-        if i.startswith('#') or i == '':
-            continue
-        if i not in whllist1:
-            #print(i)
-            #print('not install')
-            lacklist.append(i)
+    encodings = detect_encoding(f.read())
+    print(encodings)
+encoded=False
+while encoded==False:
+    try:
+        if encodings==None:
+            encoding='utf-8'
         else:
-            #print(i)
-            #print('install')
-            pass
+            encoding=encodings[0]
+        with open('requirements.txt', 'r',encoding=encoding) as f:
+            requirements = f.readlines()
+            requirements = [x.strip() for x in requirements]
+            # print(requirements)
+            for i in requirements:
+                if i.startswith('#') or i == '':
+                    continue
+                if i not in whllist1:
+                    print(i,'not install')
+                    lacklist.append(i)
+                else:
+                    print(i,'install')
+                    pass
+        encoded=True
+    except:
+        encoded=False
+        encodings.pop(0)
+        continue
 # print(lacklist)
 
 pysources=['https://pypi.tuna.tsinghua.edu.cn/simple','https://mirrors.aliyun.com/pypi/simple/']
